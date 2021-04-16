@@ -140,6 +140,7 @@ RUN \
   	&& git clone --depth=1 --recursive https://github.com/AirisX/nginx_cookie_flag_module \
   	#&& git clone --depth=1 --recursive --branch quiche-nginx-1.19.7 https://github.com/marinelli/quiche \
 	&& git clone --depth=1 --recursive https://github.com/cloudflare/quiche.git \
+	&& git clone --depth=1 --recursive https://github.com/kn007/patch.git /patch \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
         && sha512sum nginx.tar.gz nginx.tar.gz.asc \
@@ -152,7 +153,8 @@ RUN \
 
 RUN \
 	cd /usr/src/nginx-$NGINX_VERSION \
-	&& patch -p01 < /usr/src/quiche/extras/nginx/nginx-1.16.patch \
+	#&& patch -p01 < /usr/src/quiche/extras/nginx/nginx-1.16.patch \
+	&& patch -p01 < /patch/nginx_with_quic.patch \
 	&& ./configure $CONFIG --with-debug --build="pcre-${PCRE_VERSION} zlib-${ZLIB_VERSION} quiche-$(git --git-dir=/usr/src/quiche/.git rev-parse --short HEAD) headers-more-nginx-module-$(git --git-dir=/usr/src/headers-more-nginx-module/.git rev-parse --short HEAD) njs-$(git --git-dir=/usr/src/njs/.git rev-parse --short HEAD) nginx_cookie_flag_module-$(git --git-dir=/usr/src/nginx_cookie_flag_module/.git rev-parse --short HEAD)" \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
 	&& mv objs/nginx objs/nginx-debug \

@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.19.10
+ARG NGINX_VERSION=1.20.0
 ARG MAXMIND_VERSION=1.5.2
 ARG NGX_BROTLI_COMMIT=9aec15e2aa6feea2113119ba06460af70ab3ea62
 ARG PCRE_VERSION=8.44
@@ -139,8 +139,8 @@ RUN \
   	&& git clone --depth=1 --recursive https://github.com/nginx/njs \
   	&& git clone --depth=1 --recursive https://github.com/AirisX/nginx_cookie_flag_module \
   	#&& git clone --depth=1 --recursive --branch quiche-nginx-1.19.7 https://github.com/marinelli/quiche \
-	&& git clone --depth=1 --recursive https://github.com/cloudflare/quiche.git \
-	&& git checkout d8bb8e36d5c549c2bc8b87525737899abd061daf \
+	&& git clone --depth=1 --recursive https://github.com/cloudflare/quiche \
+	#&& git checkout d8bb8e36d5c549c2bc8b87525737899abd061daf \
 	&& git clone --depth=1 --recursive https://github.com/kn007/patch.git /patch \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \

@@ -2,11 +2,11 @@ name: Build HTTP3 Docker Image CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ test ]
     paths:
     - 'http3/Dockerfile'
   pull_request:
-    branches: [ main ]
+    branches: [ test ]
     paths:
     - 'http3/Dockerfile'
   workflow_dispatch:
@@ -29,5 +29,5 @@ jobs:
         with:
           file: ./http3/Dockerfile
           context: .
-          push: true
-          tags: peytonyip/nginx-brotli:http3
+          push: false
+          tags: peytonyip/nginx-brotli:test

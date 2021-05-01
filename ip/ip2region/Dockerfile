@@ -1,5 +1,5 @@
-ARG NGINX_VERSION=1.19.10
-ARG MAXMIND_VERSION=1.5.2
+ARG NGINX_VERSION=1.20.0
+ARG MAXMIND_VERSION=1.6.0
 ARG NGX_BROTLI_COMMIT=9aec15e2aa6feea2113119ba06460af70ab3ea62
 ARG CONFIG="\
 		--prefix=/etc/nginx \
@@ -47,7 +47,7 @@ ARG CONFIG="\
 		--with-http_v2_module \
 		--add-module=/usr/src/ngx_brotli \
 		--add-dynamic-module=/ngx_http_geoip2_module \
-		--add-dynamic-module=/ngx-ip2region \
+		--add-dynamic-module=/ngx-ip2region/ngx_http_ip2region_module \
 	"
 
 FROM alpine:latest
@@ -116,7 +116,8 @@ RUN \
 	&& gpg --import /tmp/nginx.pub \
 	&& gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
 	&& mkdir -p /usr/src \
-	&& git clone https://github.com/Cherisher/ngx-ip2region.git /ngx-ip2region \
+	#&& git clone https://github.com/Cherisher/ngx-ip2region.git /ngx-ip2region \
+	&& git clone https://github.com/liangwenrong/ngx_http_ip2region-module.git /ngx-ip2region \
 	&& tar -zxC /usr/src -f nginx.tar.gz
 
 RUN \

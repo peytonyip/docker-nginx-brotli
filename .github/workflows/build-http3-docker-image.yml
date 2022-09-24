@@ -1,0 +1,33 @@
+name: Build HTTP3 Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - 'http3/Dockerfile'
+  pull_request:
+    branches: [ main ]
+    paths:
+    - 'http3/Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          file: ./http3/Dockerfile
+          context: .
+          push: true
+          tags: peytonyip/nginx-brotli:http3

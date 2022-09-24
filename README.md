@@ -186,10 +186,12 @@ free ip database download links:
 
 [ip2region](https://github.com/lionsoul2014/ip2region/tree/master/data)
 
-# Thanks for:
+# Thanks for
 
 [fholzer/docker-nginx-brotli](https://github.com/fholzer/docker-nginx-brotli)
 
 [RanadeepPolavarapu/docker-nginx-http3](https://github.com/RanadeepPolavarapu/docker-nginx-http3)
 
 [marinelli/quiche](https://github.com/marinelli/quiche/tree/quiche-nginx-1.19.7)
+
+[vislee/ngx_http_ipdb_module](https://github.com/vislee/ngx_http_ipdb_module.git)

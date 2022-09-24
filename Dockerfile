@@ -50,7 +50,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ngx_http_ipdb_module \
 	"
 
-FROM alpine:latest
+FROM alpine:3.16
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -155,7 +155,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:latest
+FROM alpine:3.16
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt

@@ -1,5 +1,4 @@
 ARG NGINX_VERSION=1.23.1
-ARG MAXMIND_VERSION=1.6.0
 ARG NGX_BROTLI_COMMIT=6e975bcb015f62e1f303054897783355e2a877dc
 ARG CONFIG="\
 	--prefix=/etc/nginx \
@@ -56,22 +55,8 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ARG NGINX_VERSION
 ARG NGX_BROTLI_COMMIT
 ARG CONFIG
-ARG MAXMIND_VERSION
 
-RUN set -x \
-	&& apk add --no-cache --virtual .build-deps \
-	alpine-sdk \
-	perl \
-	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
-	&& wget https://github.com/maxmind/libmaxminddb/releases/download/${MAXMIND_VERSION}/libmaxminddb-${MAXMIND_VERSION}.tar.gz \
-	&& tar xf libmaxminddb-${MAXMIND_VERSION}.tar.gz \
-	&& cd libmaxminddb-${MAXMIND_VERSION} \
-	&& ./configure \
-	&& make \
-	&& make check \
-	&& make install \
-	&& apk del .build-deps \
-	&& ldconfig || :
+
 
 RUN \
 	apk add --no-cache --virtual .build-deps \
@@ -113,6 +98,7 @@ RUN \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \
 	#&& git clone https://github.com/Cherisher/ngx-ip2region.git /usr/src/ngx-ip2region \
+	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
 	&& git clone https://github.com/liangwenrong/ngx_http_ip2region-module.git /usr/src/ngx-ip2region \
 	&& tar -zxC /usr/src -f nginx.tar.gz
 

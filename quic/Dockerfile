@@ -19,7 +19,6 @@ RUN set -x \
   perl-dev \
   linux-headers \
   libunwind-dev \
-  # && curl -fSL https://github.com/google/boringssl/archive/master.tar.gz -o boringssl.tar.gz \
   && git clone --depth=1 -b master ${OPENSSL_URL} /usr/src/boringssl \
   && cd /usr/src/boringssl \
   && mkdir build \
@@ -38,7 +37,7 @@ ARG NGINX_VERSION=1.23.1
 
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 
-ARG MAXMIND_VERSION=1.6.0
+ARG MAXMIND_VERSION=1.7.1
 #ARG NGX_BROTLI_COMMIT=9aec15e2aa6feea2113119ba06460af70ab3ea62
 
 RUN --mount=type=bind,from=boringssl-builder,source=/usr/src/boringssl,target=/usr/src/boringssl \

@@ -1,5 +1,4 @@
 ARG NGINX_VERSION=1.23.1
-ARG MAXMIND_VERSION=1.6.0
 ARG NGX_BROTLI_COMMIT=6e975bcb015f62e1f303054897783355e2a877dc
 ARG PCRE_VERSION=8.44
 ARG ZLIB_VERSION=1.2.12
@@ -70,25 +69,9 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ARG NGINX_VERSION
 ARG NGX_BROTLI_COMMIT
 ARG CONFIG
-ARG MAXMIND_VERSION
 ARG PCRE_VERSION
 ARG ZLIB_VERSION
 #ARG QUICHE_VERSION
-
-RUN set -x \
-	&& apk add --no-cache --virtual .build-deps \
-	alpine-sdk \
-	perl \
-	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
-	&& wget https://github.com/maxmind/libmaxminddb/releases/download/${MAXMIND_VERSION}/libmaxminddb-${MAXMIND_VERSION}.tar.gz \
-	&& tar xf libmaxminddb-${MAXMIND_VERSION}.tar.gz \
-	&& cd libmaxminddb-${MAXMIND_VERSION} \
-	&& ./configure \
-	&& make \
-	&& make check \
-	&& make install \
-	&& apk del .build-deps \
-	&& ldconfig || :
 
 
 RUN \
@@ -139,7 +122,7 @@ RUN \
 	&& git clone --depth=1 --recursive https://github.com/nginx/njs \
 	&& git clone --depth=1 --recursive https://github.com/AirisX/nginx_cookie_flag_module \
 	&& git clone --depth=1 --recursive https://github.com/cloudflare/quiche \
-	#&& git clone --depth=1 --recursive --branch quiche-nginx-1.19.7 https://github.com/marinelli/quiche \
+	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \

@@ -72,7 +72,6 @@ RUN \
 	gd-dev \
 	geoip-dev \
 	perl \
-	&& apk add --no-cache --virtual .brotli-build-deps \
 	autoconf \
 	libtool \
 	automake \
@@ -99,9 +98,6 @@ RUN \
 	&& ./configure \
 	&& make \
 	&& make install \
-	#&& cd data \
-	#&& perl ip-country.pl \
-	#&& mkdir -p /usr/src \
 	&& cd /usr/src \
 	&& git clone https://github.com/ip2location/ip2location-nginx.git /usr/src/ip2location-nginx \
 	&& tar -zxC /usr/src -f nginx.tar.gz
@@ -170,7 +166,7 @@ RUN \
 	zlib-dev \
 	linux-headers \
 	curl \
-	gnupg1 \
+	gnupg \
 	libxslt-dev \
 	gd-dev \
 	geoip-dev \

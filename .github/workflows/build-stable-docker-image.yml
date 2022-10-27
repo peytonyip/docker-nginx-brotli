@@ -1,0 +1,84 @@
+name: Build Stable Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - 'stable/Dockerfile'
+  pull_request:
+    branches: [ main ]
+    paths:
+    - 'stable/Dockerfile'
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: docker.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: peytonyip/nginx-brotli
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@9becc617647dfa20ae7b1151972e9b3a2c338a2b #v2.6.0
+        with:
+          cosign-release: 'v1.11.0'
+      
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325
+
+      # 获得 Nginx 版本号
+      - name: Set Version
+        id: set-version
+        run: |
+          echo "::set-output name=version::$(head -n 1 Dockerfile |awk -F '[=]'  '{print $2}')"
+          echo "Nginx=$(head -n 1 Dockerfile |awk -F '[=]'  '{print $2}')" 
+          echo "::set-output name=status::success"
+          
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@c56af957549030174b10d6867f20e78cfd7debc5
+        with:
+          context: .
+          file: ./stable/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            peytonyip/nginx-brotli:stable
+            peytonyip/nginx-brotli:${{ steps.set-version.outputs.version }}
+          #labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
+

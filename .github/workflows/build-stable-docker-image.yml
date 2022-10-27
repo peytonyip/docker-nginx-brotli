@@ -43,8 +43,8 @@ jobs:
       - name: Set Version
         id: set-version
         run: |
-          echo "::set-output name=version::$(head -n 1 Dockerfile |awk -F '[=]'  '{print $2}')"
-          echo "Nginx=$(head -n 1 Dockerfile |awk -F '[=]'  '{print $2}')" 
+          echo "::set-output name=version::$(head -n 1 stable/Dockerfile |awk -F '[=]'  '{print $2}')"
+          echo "Nginx=$(head -n 1 stable/Dockerfile |awk -F '[=]'  '{print $2}')" 
           echo "::set-output name=status::success"
           
       - name: Log into registry ${{ env.REGISTRY }}

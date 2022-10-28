@@ -1,8 +1,8 @@
 ARG NGINX_VERSION=1.23.2
 ARG NGX_BROTLI_COMMIT=6e975bcb015f62e1f303054897783355e2a877dc
-ARG PCRE_VERSION=8.44
-ARG ZLIB_VERSION=1.2.12
-#ARG QUICHE_VERSION=0.7.0
+ARG PCRE2_VERSION=10.40
+ARG ZLIB_VERSION=1.2.13
+
 ARG CONFIG="\
 	--prefix=/etc/nginx \
 	--sbin-path=/usr/sbin/nginx \
@@ -19,7 +19,7 @@ ARG CONFIG="\
 	--http-scgi-temp-path=/var/cache/nginx/scgi_temp \
 	--user=nginx \
 	--group=nginx \
-	--with-pcre=/usr/src/pcre-${PCRE_VERSION} \
+	--with-pcre=/usr/src/pcre2-${PCRE2_VERSION} \
 	--with-pcre-jit \
 	--with-zlib=/usr/src/zlib-${ZLIB_VERSION} \
 	--with-http_ssl_module \
@@ -69,7 +69,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ARG NGINX_VERSION
 ARG NGX_BROTLI_COMMIT
 ARG CONFIG
-ARG PCRE_VERSION
+ARG PCRE2_VERSION
 ARG ZLIB_VERSION
 #ARG QUICHE_VERSION
 
@@ -116,7 +116,7 @@ RUN \
 	&& git checkout --recurse-submodules -q FETCH_HEAD \
 	&& git submodule update --init --depth 1 \
 	&& cd .. \
-	&& wget -qO- https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz | tar zxvf - \
+	&& wget -qO- https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE2_VERSION}/pcre2-${PCRE2_VERSION}.tar.gz | tar zxvf - \
 	&& wget -qO- http://zlib.net/zlib-${ZLIB_VERSION}.tar.gz | tar zxvf - \
 	&& git clone --depth=1 --recursive https://github.com/openresty/headers-more-nginx-module \
 	&& git clone --depth=1 --recursive https://github.com/nginx/njs \
@@ -133,7 +133,7 @@ RUN \
 	cd /usr/src/nginx-$NGINX_VERSION \
 	&& curl https://raw.githubusercontent.com/kn007/patch/master/nginx_with_quic.patch | patch -p1 \
 	#&& patch -p01 < /usr/src/quiche/extras/nginx/nginx-1.19.7.patch \
-	&& ./configure $CONFIG --with-debug --build="pcre-${PCRE_VERSION} zlib-${ZLIB_VERSION} quiche-$(git --git-dir=/usr/src/quiche/.git rev-parse --short HEAD) headers-more-nginx-module-$(git --git-dir=/usr/src/headers-more-nginx-module/.git rev-parse --short HEAD) njs-$(git --git-dir=/usr/src/njs/.git rev-parse --short HEAD) nginx_cookie_flag_module-$(git --git-dir=/usr/src/nginx_cookie_flag_module/.git rev-parse --short HEAD)" \
+	&& ./configure $CONFIG --with-debug --build="pcre2-${PCRE2_VERSION} zlib-${ZLIB_VERSION} quiche-$(git --git-dir=/usr/src/quiche/.git rev-parse --short HEAD) headers-more-nginx-module-$(git --git-dir=/usr/src/headers-more-nginx-module/.git rev-parse --short HEAD) njs-$(git --git-dir=/usr/src/njs/.git rev-parse --short HEAD) nginx_cookie_flag_module-$(git --git-dir=/usr/src/nginx_cookie_flag_module/.git rev-parse --short HEAD)" \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
 	&& mv objs/nginx objs/nginx-debug \
 	&& mv objs/ngx_http_xslt_filter_module.so objs/ngx_http_xslt_filter_module-debug.so \
@@ -141,7 +141,7 @@ RUN \
 	&& mv objs/ngx_http_geoip_module.so objs/ngx_http_geoip_module-debug.so \
 	&& mv objs/ngx_http_perl_module.so objs/ngx_http_perl_module-debug.so \
 	&& mv objs/ngx_stream_geoip_module.so objs/ngx_stream_geoip_module-debug.so \
-	&& ./configure $CONFIG --build="pcre-${PCRE_VERSION} zlib-${ZLIB_VERSION} quiche-$(git --git-dir=/usr/src/quiche/.git rev-parse --short HEAD)  headers-more-nginx-module-$(git --git-dir=/usr/src/headers-more-nginx-module/.git rev-parse --short HEAD) njs-$(git --git-dir=/usr/src/njs/.git rev-parse --short HEAD) nginx_cookie_flag_module-$(git --git-dir=/usr/src/nginx_cookie_flag_module/.git rev-parse --short HEAD)" \
+	&& ./configure $CONFIG --build="pcre2-${PCRE2_VERSION} zlib-${ZLIB_VERSION} quiche-$(git --git-dir=/usr/src/quiche/.git rev-parse --short HEAD)  headers-more-nginx-module-$(git --git-dir=/usr/src/headers-more-nginx-module/.git rev-parse --short HEAD) njs-$(git --git-dir=/usr/src/njs/.git rev-parse --short HEAD) nginx_cookie_flag_module-$(git --git-dir=/usr/src/nginx_cookie_flag_module/.git rev-parse --short HEAD)" \
 	&& make -j$(getconf _NPROCESSORS_ONLN)
 
 RUN \

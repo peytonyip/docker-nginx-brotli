@@ -79,7 +79,7 @@ RUN \
 	gcc \
 	libc-dev \
 	make \
-	openssl3-dev \
+	openssl-dev \
 	pcre-dev \
 	zlib-dev \
 	linux-headers \

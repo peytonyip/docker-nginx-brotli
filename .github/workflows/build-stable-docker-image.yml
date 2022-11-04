@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'stable/Dockerfile'
+    - './stable/Dockerfile'
   pull_request:
     branches: [ main ]
     paths:
-    - 'stable/Dockerfile'
+    - './stable/Dockerfile'
   workflow_dispatch:
 
 env:
@@ -40,12 +40,11 @@ jobs:
         uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325
 
       # 获得 Nginx 版本号
-      - name: Set Version
-        id: set-version
+      - name: Set nginx version
+        id: set-nginx-version
         run: |
-          echo "::set-output name=version::$(head -n 1 stable/Dockerfile |awk -F '[=]'  '{print $2}')"
-          echo "Nginx=$(head -n 1 stable/Dockerfile |awk -F '[=]'  '{print $2}')" 
-          echo "::set-output name=status::success"
+          echo "NGINX-VERSION=$(head -n 1 ./stable/Dockerfile |awk -F '[=]'  '{print $2}')" >>  $GITHUB_OUTPUT
+          echo "Nginx=$(head -n 1 ./stable/Dockerfile |awk -F '[=]'  '{print $2}')" 
           
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
@@ -64,7 +63,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             peytonyip/nginx-brotli:stable
-            peytonyip/nginx-brotli:${{ steps.set-version.outputs.version }}
+            peytonyip/nginx-brotli:${{ steps.set-nginx-version.outputs.NGINX-VERSION }}
           #labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

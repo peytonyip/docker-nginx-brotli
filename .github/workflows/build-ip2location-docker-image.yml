@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'ip/ip2location/Dockerfile'
+    - './ip/ip2location/Dockerfile'
   pull_request:
     branches: [ main ]
     paths:
-    - 'ip/ip2location/Dockerfile'
+    - './ip/ip2location/Dockerfile'
   workflow_dispatch:
 
 env:
@@ -40,12 +40,11 @@ jobs:
         uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325
 
       # 获得 Nginx 版本号
-      - name: Set Version
-        id: set-version
+      - name: Set nginx version
+        id: set-nginx-version
         run: |
-          echo "::set-output name=version::$(head -n 1 Dockerfile |awk -F '[=]'  '{print $2}')"
-          echo "Nginx=$(head -n 1 Dockerfile |awk -F '[=]'  '{print $2}')" 
-          echo "::set-output name=status::success"
+          echo "NGINX-VERSION=$(head -n 1 ./ip/ip2location/Dockerfile |awk -F '[=]'  '{print $2}')" >>  $GITHUB_OUTPUT
+          echo "Nginx=$(head -n 1 ./ip/ip2location/Dockerfile |awk -F '[=]'  '{print $2}')" 
           
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'

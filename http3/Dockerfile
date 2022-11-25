@@ -169,7 +169,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.16
+FROM alpine:3.17
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt
@@ -182,7 +182,7 @@ COPY --from=0 /usr/bin/envsubst /usr/local/bin/envsubst
 RUN \
 	addgroup -S nginx \
 	&& adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx \
-	&& apk add --no-cache --virtual .nginx-rundeps tzdata openssl3 $(cat /tmp/runDeps.txt) \
+	&& apk add --no-cache --virtual .nginx-rundeps tzdata openssl $(cat /tmp/runDeps.txt) \
 	&& rm /tmp/runDeps.txt \
 	&& ln -s /usr/lib/nginx/modules /etc/nginx/modules \
 	# forward request and error logs to docker log collector

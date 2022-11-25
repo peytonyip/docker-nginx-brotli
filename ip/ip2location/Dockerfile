@@ -48,7 +48,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ip2location-nginx \
 	"
 
-FROM alpine:3.16
+FROM alpine:3.17
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -62,7 +62,7 @@ RUN \
 	gcc \
 	libc-dev \
 	make \
-	openssl3-dev \
+	openssl-dev \
 	pcre-dev \
 	zlib-dev \
 	linux-headers \
@@ -138,7 +138,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.16
+FROM alpine:3.17
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt
@@ -179,7 +179,7 @@ RUN \
 	&& make install \
 	&& apk del .build-deps \
 	&& rm -rf /IP2Location-C-Library \
-	&& apk add --no-cache --virtual .nginx-rundeps openssl3 tzdata $(cat /tmp/runDeps.txt) \
+	&& apk add --no-cache --virtual .nginx-rundeps openssl tzdata $(cat /tmp/runDeps.txt) \
 	&& rm /tmp/runDeps.txt \
 	&& ln -s /usr/lib/nginx/modules /etc/nginx/modules \
 	# forward request and error logs to docker log collector

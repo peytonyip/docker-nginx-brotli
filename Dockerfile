@@ -62,7 +62,7 @@ RUN apk add --no-cache --virtual .build-deps \
 	gcc \
 	libc-dev \
 	make \
-	openssl3-dev \
+	openssl-dev \
 	pcre-dev \
 	zlib-dev \
 	linux-headers \
@@ -146,7 +146,7 @@ COPY --from=0 /usr/bin/envsubst /usr/local/bin/envsubst
 RUN \
 	addgroup -S nginx; \
 	adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx nginx; \
-	apk add --no-cache --virtual .nginx-rundeps tzdata openssl3 $(cat /tmp/runDeps.txt); \
+	apk add --no-cache --virtual .nginx-rundeps tzdata openssl $(cat /tmp/runDeps.txt); \
 	rm /tmp/runDeps.txt; \
 	ln -s /usr/lib/nginx/modules /etc/nginx/modules; \
 	# forward request and error logs to docker log collector

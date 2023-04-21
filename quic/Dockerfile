@@ -2,9 +2,6 @@
 FROM alpine:3 as boringssl-builder
 
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
-
-ARG OPENSSL_BRANCH=OpenSSL_1_1_1a
-
 ARG OPENSSL_URL=https://github.com/google/boringssl
 
 RUN set -x \
@@ -33,7 +30,7 @@ FROM alpine:3.17
 
 LABEL maintainer="nginx With HTTP3"
 
-ARG NGINX_VERSION=1.23.2
+ARG NGINX_VERSION=1.23.4
 
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 

@@ -52,7 +52,7 @@ ARG CONFIG="\
 	--with-file-aio \
 	--with-http_v2_module \
 	--with-http_v3_module \
-	--with-openssl=/usr/src/quiche/deps/boringssl \
+	--with-openssl=/usr/src/quiche/quiche/deps/boringssl \
 	--with-quiche=/usr/src/quiche \
 	--add-module=/usr/src/ngx_brotli \
 	--add-module=/usr/src/headers-more-nginx-module \

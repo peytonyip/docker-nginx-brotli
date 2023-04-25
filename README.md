@@ -158,7 +158,7 @@ http {
         server {
             # for better compatibility it's recommended
             # to use the same port for quic and https
-            listen 8443 http3 reuseport;
+            listen 8443 quic reuseport;
             listen 8443 ssl;
 
             ssl_certificate     certs/example.com.crt;
@@ -167,7 +167,7 @@ http {
 
             location / {
                 # required for browsers to direct them into quic port
-                add_header Alt-Svc '$http3=":8443"; ma=86400';
+                add_header Alt-Svc 'h3=":8443"; ma=86400';
             }
         }
     }

@@ -126,7 +126,7 @@ server {
   ssl_prefer_server_ciphers on;
 
   # Add Alt-Svc header to negotiate HTTP/3.
-  add_header alt-svc 'h3-29=":443"; ma=86400';
+  add_header alt-svc 'h3=":443"; ma=86400';
   # Debug 0-RTT.
   add_header X-Early-Data $tls1_3_early_data;
 
@@ -195,3 +195,5 @@ free ip database download links:
 [marinelli/quiche](https://github.com/marinelli/quiche/tree/quiche-nginx-1.19.7)
 
 [vislee/ngx_http_ipdb_module](https://github.com/vislee/ngx_http_ipdb_module.git)
+
+[quiche](https://github.com/cloudflare/quiche)

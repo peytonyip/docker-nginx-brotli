@@ -76,34 +76,33 @@ ARG ZLIB_VERSION
 
 RUN \
 	apk add --no-cache --virtual .build-deps \
-	gcc \
-	libc-dev \
-	make \
-	openssl-dev \
-	pcre-dev \
-	zlib-dev \
-	linux-headers \
-	curl \
-	gnupg \
-	libxslt-dev \
-	gd-dev \
-	geoip-dev \
-	perl-dev \
-	libmaxminddb \
-	libmaxminddb-dev \
-	json-c-dev \
-	&& apk add --no-cache --virtual .brotli-build-deps \
-	autoconf \
-	libtool \
-	automake \
-	git \
-	g++ \
-	cmake\
-	go \
-	perl \
-	rust \
-	cargo \
-	patch 
+    gcc \
+    libc-dev \
+    make \
+    openssl-dev \
+    pcre-dev \
+    zlib-dev \
+    linux-headers \
+    curl \
+    gnupg \
+    libxslt-dev \
+    gd-dev \
+    geoip-dev \
+    perl-dev \
+    libmaxminddb-dev \
+    json-c-dev \
+    autoconf \
+    libtool \
+    automake \
+    git \
+    g++ \
+    cmake \
+    go \
+    perl \
+    rust \
+    cargo \
+    patch \
+    ninja
 
 COPY nginx.pub /tmp/nginx.pub
 
@@ -125,7 +124,6 @@ RUN \
 	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
-	&& mkdir -p /usr/src \
 	&& git clone https://github.com/peytonyip/ngx_http_ipdb_module.git /usr/src/ngx_http_ipdb_module \
 	&& tar -zxC /usr/src -f nginx.tar.gz
 

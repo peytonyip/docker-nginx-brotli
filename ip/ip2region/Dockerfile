@@ -46,7 +46,9 @@ ARG CONFIG="\
 	--with-http_v2_module \
 	--add-module=/usr/src/ngx_brotli \
 	--add-dynamic-module=/usr/src/ngx_http_geoip2_module \
-	--add-dynamic-module=/usr/src/ngx-ip2region/ngx_http_ip2region_module \
+	--add-module=/usr/src/ip2region/binding/nginx                       \
+    --with-cc-opt="-I /usr/src/ip2region/binding/c/build/include"       \
+    --with-ld-opt="-L/usr/src/ip2region/binding/c/build/lib"        \ 
 	"
 
 FROM alpine:3.17
@@ -99,11 +101,13 @@ RUN \
 	&& mkdir -p /usr/src \
 	#&& git clone https://github.com/Cherisher/ngx-ip2region.git /usr/src/ngx-ip2region \
 	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
-	&& git clone https://github.com/liangwenrong/ngx_http_ip2region-module.git /usr/src/ngx-ip2region \
+	&& git clone https://github.com/lionsoul2014/ip2region.git \
 	&& tar -zxC /usr/src -f nginx.tar.gz
 
 RUN \
-	cd /usr/src/nginx-$NGINX_VERSION \
+    cd ip2region/binding/c \
+	&& make xdb_searcher_lib \
+	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \
 	&& make -j$(getconf _NPROCESSORS_ONLN) \
 	&& mv objs/nginx objs/nginx-debug \

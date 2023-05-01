@@ -105,7 +105,7 @@ RUN \
 	&& tar -zxC /usr/src -f nginx.tar.gz
 
 RUN \
-    cd ip2region/binding/c \
+    cd /usr/src/ip2region/binding/c \
 	&& make xdb_searcher_lib \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
 	&& ./configure $CONFIG --with-debug \

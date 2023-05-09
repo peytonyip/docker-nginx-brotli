@@ -46,10 +46,8 @@ ARG CONFIG="\
 	--with-http_v2_module \
 	--add-module=/usr/src/ngx_brotli \
 	--add-dynamic-module=/usr/src/ngx_http_geoip2_module \
-	--add-module=/usr/src/ip2region/binding/nginx                       \
-    --with-cc-opt="-I /usr/src/ip2region/binding/c/build/include"       \
-    --with-ld-opt="-L/usr/src/ip2region/binding/c/build/lib"        \ 
-	"
+	--add-module=/usr/src/ip2region/binding/nginx \
+	" 
 
 FROM alpine:3.17
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
@@ -77,6 +75,7 @@ RUN \
 	libmaxminddb \
 	libmaxminddb-dev \
 	json-c-dev \
+	libc-dev \
 	&& apk add --no-cache --virtual .brotli-build-deps \
 	autoconf \
 	libtool \
@@ -99,7 +98,6 @@ RUN \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \
-	#&& git clone https://github.com/Cherisher/ngx-ip2region.git /usr/src/ngx-ip2region \
 	&& git clone https://github.com/leev/ngx_http_geoip2_module /usr/src/ngx_http_geoip2_module \
 	&& git clone https://github.com/lionsoul2014/ip2region.git \
 	&& tar -zxC /usr/src -f nginx.tar.gz
@@ -108,7 +106,9 @@ RUN \
     cd /usr/src/ip2region/binding/c \
 	&& make xdb_searcher_lib \
 	&& cd /usr/src/nginx-$NGINX_VERSION \
-	&& ./configure $CONFIG \
+	&& ./configure $CONFIG  \
+	   --with-cc-opt="-I ../ip2region/binding/c/build/include" \
+       --with-ld-opt="-L../ip2region/binding/c/build/lib" \
 	&& make -j$(getconf _NPROCESSORS_ONLN)
 
 RUN \

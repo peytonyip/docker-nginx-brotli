@@ -78,8 +78,17 @@ http {
     ipdb_proxy 127.0.0.1;
     ipdb_proxy_recursive on;
     
-    # ip2region
+    # ip2region-v1
     ip2region "/path/to/ip2region.db" "btree"; 
+
+    # ip2region
+    # https://github.com/lionsoul2014/ip2region/tree/master/binding/nginx
+    # set xdb file path
+    ip2region_db ip2region.xdb;
+    # ip2region_db ip2region.xdb vectorIndex;
+    # ip2region_db ip2region.xdb file;
+    # ip2region_db ip2region.xdb content;
+
 
 
 
@@ -184,7 +193,7 @@ free ip database download links:
 
 [ip2location](https://lite.ip2location.com/)
 
-[ip2region](https://github.com/lionsoul2014/ip2region/tree/master/data)
+[ip2region.xdb](https://github.com/lionsoul2014/ip2region/tree/master/data)
 
 # Thanks for
 

@@ -206,4 +206,7 @@ EXPOSE 80/tcp 443/tcp 443/udp
 
 STOPSIGNAL SIGQUIT
 
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s \
+  CMD nc -z localhost 80 || exit 1
+
 CMD ["nginx", "-g", "daemon off;"]

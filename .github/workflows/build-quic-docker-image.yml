@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - './quic/Dockerfile'
+    - 'quic/Dockerfile'
   pull_request:
     branches: [ main ]
     paths:
-    - './quic/Dockerfile'
+    - 'quic/Dockerfile'
   workflow_dispatch:
 
 env:

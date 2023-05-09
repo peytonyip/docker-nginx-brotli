@@ -138,15 +138,6 @@ RUN --mount=type=bind,from=boringssl-builder,source=/usr/src/boringssl,target=/u
   && tar -zxC /usr/src -f nginx.tar.gz \
   && rm -rf nginx.tar.gz boringssl.tar.gz \
   && cd /usr/src/nginx-quic-quic \
-  && ./auto/configure $CONFIG --with-debug \
-  --with-cc-opt="-I../boringssl/include" \
-  --with-ld-opt="-L../boringssl/build/ssl  -L../boringssl/build/crypto" \
-  && make -j$(getconf _NPROCESSORS_ONLN) \
-  && mv objs/nginx objs/nginx-debug \
-  && mv objs/ngx_http_xslt_filter_module.so objs/ngx_http_xslt_filter_module-debug.so \
-  && mv objs/ngx_http_image_filter_module.so objs/ngx_http_image_filter_module-debug.so \
-  && mv objs/ngx_http_geoip_module.so objs/ngx_http_geoip_module-debug.so \
-  && mv objs/ngx_stream_geoip_module.so objs/ngx_stream_geoip_module-debug.so \
   && ./auto/configure $CONFIG \
   --with-cc-opt="-I../boringssl/include" \
   --with-ld-opt="-L../boringssl/build/ssl  -L../boringssl/build/crypto" \
@@ -154,12 +145,7 @@ RUN --mount=type=bind,from=boringssl-builder,source=/usr/src/boringssl,target=/u
   && make install \
   && rm -rf /etc/nginx/html/index.html \
   && mkdir /etc/nginx/conf.d/ \
-  # && mkdir -p /usr/share/nginx/html/ \
-  && install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
-  && install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so \
-  && install -m755 objs/ngx_http_image_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_image_filter_module-debug.so \
-  && install -m755 objs/ngx_http_geoip_module-debug.so /usr/lib/nginx/modules/ngx_http_geoip_module-debug.so \
-  && install -m755 objs/ngx_stream_geoip_module-debug.so /usr/lib/nginx/modules/ngx_stream_geoip_module-debug.so \
+  && mkdir -p /usr/share/nginx/html/ \
   && ln -s /usr/lib/nginx/modules /etc/nginx/modules \
   && strip /usr/sbin/nginx* \
   && strip /usr/lib/nginx/modules/*.so \

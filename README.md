@@ -81,7 +81,7 @@ http {
     # ip2region-v1
     ip2region "/path/to/ip2region.db" "btree"; 
 
-    # ip2region
+    # ip2region-v2
     # https://github.com/lionsoul2014/ip2region/tree/master/binding/nginx
     # set xdb file path
     ip2region_db ip2region.xdb;

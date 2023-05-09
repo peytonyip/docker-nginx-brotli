@@ -73,6 +73,7 @@ RUN apk add --no-cache --virtual .build-deps \
 	geoip-dev \
 	libmaxminddb \
 	libmaxminddb-dev \
+	json-c-dev \
 	autoconf \
 	libtool \
 	automake \
@@ -100,32 +101,18 @@ RUN \
 
 RUN \
 	cd /usr/src/nginx-$NGINX_VERSION; \
-	./configure $CONFIG --with-debug; \
-	make -j$(getconf _NPROCESSORS_ONLN); \
-	mv objs/nginx objs/nginx-debug; \
-	mv objs/ngx_http_xslt_filter_module.so objs/ngx_http_xslt_filter_module-debug.so; \
-	mv objs/ngx_http_image_filter_module.so objs/ngx_http_image_filter_module-debug.so; \
-	mv objs/ngx_http_geoip_module.so objs/ngx_http_geoip_module-debug.so; \
-	mv objs/ngx_stream_geoip_module.so objs/ngx_stream_geoip_module-debug.so; \
 	./configure $CONFIG; \
-	make -j$(getconf _NPROCESSORS_ONLN)
-
-RUN \
-	cd /usr/src/nginx-$NGINX_VERSION; \
+	make -j$(getconf _NPROCESSORS_ONLN); \
 	make install; \
 	rm -rf /etc/nginx/html/; \
 	mkdir /etc/nginx/conf.d/; \
 	mkdir -p /usr/share/nginx/html/; \
 	install -m644 html/index.html /usr/share/nginx/html/; \
 	install -m644 html/50x.html /usr/share/nginx/html/; \
-	install -m755 objs/nginx-debug /usr/sbin/nginx-debug; \
-	install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so; \
-	install -m755 objs/ngx_http_image_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_image_filter_module-debug.so; \
-	install -m755 objs/ngx_http_geoip_module-debug.so /usr/lib/nginx/modules/ngx_http_geoip_module-debug.so; \
-	install -m755 objs/ngx_stream_geoip_module-debug.so /usr/lib/nginx/modules/ngx_stream_geoip_module-debug.so; \
 	strip /usr/sbin/nginx*; \
-	strip /usr/lib/nginx/modules/*.so; \
-	\
+	strip /usr/lib/nginx/modules/*.so
+
+RUN \
 	apk add --no-cache --virtual .gettext gettext; \
 	scanelf --needed --nobanner /usr/sbin/nginx /usr/lib/nginx/modules/*.so /usr/bin/envsubst \
 	| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
@@ -138,8 +125,8 @@ ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt
 COPY --from=0 /etc/nginx /etc/nginx
-COPY --from=0 /usr/lib/nginx/modules/*.so /usr/lib/nginx/modules/
-COPY --from=0 /usr/sbin/nginx /usr/sbin/nginx-debug /usr/sbin/
+COPY --from=0 /usr/lib/nginx/modules/*module.so /usr/lib/nginx/modules/
+COPY --from=0 /usr/sbin/nginx /usr/sbin/
 COPY --from=0 /usr/share/nginx/html/* /usr/share/nginx/html/
 COPY --from=0 /usr/bin/envsubst /usr/local/bin/envsubst
 
@@ -151,7 +138,7 @@ RUN \
 	ln -s /usr/lib/nginx/modules /etc/nginx/modules; \
 	# forward request and error logs to docker log collector
 	mkdir /var/log/nginx; \
-	touch /var/log/nginx/access.log /var/log/nginx/error.log; \
+	# touch /var/log/nginx/access.log /var/log/nginx/error.log; \
 	ln -sf /dev/stdout /var/log/nginx/access.log; \
 	ln -sf /dev/stderr /var/log/nginx/error.log
 

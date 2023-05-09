@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - './stable/Dockerfile'
+    - 'stable/Dockerfile'
   pull_request:
     branches: [ main ]
     paths:
-    - './stable/Dockerfile'
+    - 'stable/Dockerfile'
   workflow_dispatch:
 
 env:

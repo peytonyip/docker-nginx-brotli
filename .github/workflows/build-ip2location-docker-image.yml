@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - './ip/ip2location/Dockerfile'
+    - 'ip/ip2location/Dockerfile'
   pull_request:
     branches: [ main ]
     paths:
-    - './ip/ip2location/Dockerfile'
+    - 'ip/ip2location/Dockerfile'
   workflow_dispatch:
 
 env:

@@ -53,6 +53,14 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to Quay.io
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_TOKEN }}
       
       - name: Build and push Docker image
         id: build-and-push
@@ -61,7 +69,9 @@ jobs:
           context: .
           file: ./quic/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: peytonyip/nginx-brotli:quic
+          tags: |
+            peytonyip/nginx-brotli:quic
+            quay.io/yevision/nginx-brotli:quic
           #labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

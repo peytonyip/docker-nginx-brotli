@@ -2,6 +2,17 @@
 
 [![Build Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-docker-image.yml)
 
+[![Build Stable Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-stable-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-stable-docker-image.yml)
+
+[![Build ip2location Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ip2location-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ip2location-docker-image.yml)
+
+[![Build ip2region Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ipregion-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ipregion-docker-image.yml)
+
+[![Build quic Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-quic-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-quic-docker-image.yml)
+
+[![Build HTTP3 Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-http3-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-http3-docker-image.yml)
+
+
 # What is this?
 This project is based on Alpine Linux, the official nginx image and an nginx module that provides static and dynamic brotli compression. [Brotli](https://github.com/google/brotli) and the [nginx brotli module ](https://github.com/google/ngx_brotli) are built by Google.
 

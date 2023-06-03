@@ -129,7 +129,8 @@ RUN \
 
 RUN \
 	cd /usr/src/nginx-$NGINX_VERSION \
-	&& curl https://raw.githubusercontent.com/kn007/patch/master/nginx_with_quic.patch | patch -p1 \
+	#&& curl https://raw.githubusercontent.com/kn007/patch/master/nginx_with_quic.patch | patch -p1 \
+	&& curl https://raw.githubusercontent.com/kn007/patch/master/nginx.patch | patch -p1 \
 	#&& patch -p01 < /usr/src/quiche/extras/nginx/nginx-1.19.7.patch \
 	&& ./configure $CONFIG --build="pcre2-${PCRE2_VERSION} zlib-${ZLIB_VERSION} quiche-$(git --git-dir=/usr/src/quiche/.git rev-parse --short HEAD)  headers-more-nginx-module-$(git --git-dir=/usr/src/headers-more-nginx-module/.git rev-parse --short HEAD) njs-$(git --git-dir=/usr/src/njs/.git rev-parse --short HEAD) nginx_cookie_flag_module-$(git --git-dir=/usr/src/nginx_cookie_flag_module/.git rev-parse --short HEAD)" \
 	&& make -j$(getconf _NPROCESSORS_ONLN)

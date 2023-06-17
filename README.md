@@ -121,7 +121,7 @@ server {
   # Enable QUIC and HTTP/3.
   listen 443 quic reuseport;
   # Ensure that HTTP/2 is enabled for the server
-  listen 443 ssl http2;
+  listen 443;
   server_name localhost;
 
   # Enable TLS versions (TLSv1.3 is required for QUIC).
@@ -175,7 +175,7 @@ http {
             # for better compatibility it's recommended
             # to use the same port for quic and https
             listen 8443 quic reuseport;
-            listen 8443 ssl;
+            listen 8443;
 
             ssl_certificate     certs/example.com.crt;
             ssl_certificate_key certs/example.com.key;

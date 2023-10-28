@@ -204,6 +204,8 @@ free ip database download links:
 
 # Thanks for
 
+[Support for QUIC and HTTP/3](https://nginx.org/en/docs/quic.html)
+
 [fholzer/docker-nginx-brotli](https://github.com/fholzer/docker-nginx-brotli)
 
 [RanadeepPolavarapu/docker-nginx-http3](https://github.com/RanadeepPolavarapu/docker-nginx-http3)

@@ -14,7 +14,7 @@ This project is based on Alpine Linux, the official nginx image and an nginx mod
 
 since 1.19.8 is nginx  + brotli + [ngx_http_geoip2_module](https://github.com/leev/ngx_http_geoip2_module) + [ngx_http_ipdb_module](https://github.com/vislee/ngx_http_ipdb_module)
 
-the http3 is test for latest nginx + brotli + ngx_http_geoip2_module + ngx_http_ipdb_module + http/3,http/3 support provided from the [cloudflare/quiche](https://github.com/cloudflare/quiche) projectthe, availability of the mirror is not guaranteed
+the http3 is test for latest nginx + brotli + ngx_http_geoip2_module + ngx_http_ipdb_module + http/3,http/3 support provided from the [cloudflare/quiche](https://github.com/cloudflare/quiche) projectthe, availability of the mirror is not guaranteed (Discontinued)
 
 the quic is test for latest [nginx-quic](https://hg.nginx.org/nginx-quic/) + brotli + ngx_http_geoip2_module +  ngx_http_ipdb_module,the availability of the mirror is not guaranteed
 

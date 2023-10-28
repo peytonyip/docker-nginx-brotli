@@ -30,7 +30,7 @@ FROM alpine:3.18
 
 LABEL maintainer="nginx With HTTP3"
 
-ARG NGINX_VERSION=1.25.2
+ARG NGINX_VERSION=1.25.3
 
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 
@@ -132,12 +132,12 @@ RUN --mount=type=bind,from=boringssl-builder,source=/usr/src/boringssl,target=/u
   && cd ngx_brotli \
   && git submodule update --init \
   && cd /tmp \
-  && curl -fSL https://hg.nginx.org/nginx-quic/archive/quic.tar.gz -o nginx.tar.gz \
+  && curl -fSL https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
   && mkdir -p /usr/src \
   && tar -zxC /usr/src -f nginx.tar.gz \
   && rm -rf nginx.tar.gz boringssl.tar.gz \
-  && cd /usr/src/nginx-quic-quic \
-  && ./auto/configure $CONFIG \
+  && cd /usr/src/nginx-$NGINX_VERSION \
+  && ./configure $CONFIG \
   --with-cc-opt="-I../boringssl/include" \
   --with-ld-opt="-L../boringssl/build/ssl  -L../boringssl/build/crypto" \
   && make -j$(getconf _NPROCESSORS_ONLN) \
@@ -148,7 +148,7 @@ RUN --mount=type=bind,from=boringssl-builder,source=/usr/src/boringssl,target=/u
   && ln -s /usr/lib/nginx/modules /etc/nginx/modules \
   && strip /usr/sbin/nginx* \
   && strip /usr/lib/nginx/modules/*.so \
-  && rm -rf /usr/src/nginx-quic-quic \
+  && rm -rf /usr/src/nginx-$NGINX_VERSION \
   # Bring in gettext so we can get `envsubst`, then throw
   # the rest away. To do this, we need to install `gettext`
   # then move `envsubst` out of the way so `gettext` can

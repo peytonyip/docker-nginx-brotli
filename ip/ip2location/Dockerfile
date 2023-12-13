@@ -48,7 +48,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ip2location-nginx \
 	"
 
-FROM alpine:3.18
+FROM alpine:3.19
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION

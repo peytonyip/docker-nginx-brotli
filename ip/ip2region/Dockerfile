@@ -49,7 +49,7 @@ ARG CONFIG="\
 	--add-module=/usr/src/ip2region/binding/nginx \
 	" 
 
-FROM alpine:3.18
+FROM alpine:3.19
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION

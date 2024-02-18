@@ -96,7 +96,7 @@ RUN --mount=type=bind,from=boringssl-builder,source=/usr/src/boringssl,target=/u
   gcc \
   libc-dev \
   make \
-  # openssl-dev \
+  openssl-dev \
   pcre-dev \
   zlib-dev \
   linux-headers \

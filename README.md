@@ -54,7 +54,9 @@ http {
     ......
     log_format json_log escape=json '{'
        
-         ```````
+        ........
+        #Select the content of the part according to the actual selection
+
         '"ipdb_country_name": "$ipdb_country_name",'
         '"ipdb_city_name": "$ipdb_city_name",'
         '"ip2region_country_name": "$ip2region_country_name",'
@@ -66,7 +68,7 @@ http {
         '"geoip2_data_city_name": "$geoip2_data_city_name"'
         '}';
     
-    # geoip2
+    # for geoip2
     geoip2 /path/to/GeoLite2-Country.mmdb {
         auto_reload 60m;
         $geoip2_metadata_country_build metadata build_epoch;
@@ -79,16 +81,16 @@ http {
         $geoip2_data_city_name city names en;
     }
     
-    # ipdb
+    # for ipdb
     ipdb /path/to/qqwry.ipdb;
     ipdb_language CN;
     ipdb_proxy 127.0.0.1;
     ipdb_proxy_recursive on;
     
-    # ip2region-v1
+    # for ip2region-v1
     ip2region "/path/to/ip2region.db" "btree"; 
 
-    # ip2region-v2
+    # for ip2region-v2
     # https://github.com/lionsoul2014/ip2region/tree/master/binding/nginx
     # set xdb file path
     ip2region_db ip2region.xdb;
@@ -190,7 +192,28 @@ http {
 
 ```
 
+### HEALTHCHECK
+the image had add healthcheck:
+```
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s \
+  CMD nc -z localhost 80 || exit 1
+```
+the default port is 80, so if you are using a different port, you need to change it:
 
+```yaml
+#docker-compose.yaml:
+
+version: "3.8"
+services:
+  nginx:
+    image: peytonyip/nginx-brotli:<tag>
+    healthcheck:
+    test: ["CMD", "nc", "-z", "localhost", "<replace it with the port you used.>"]
+    interval: 10s
+    timeout: 5s
+    start_period: 60s
+    ......
+```
 
 free ip database download links:
 

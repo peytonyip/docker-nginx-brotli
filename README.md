@@ -14,7 +14,7 @@ since 1.19.8 is nginx  + brotli + [ngx_http_geoip2_module](https://github.com/le
 
 **after 1.25.4, add http3, and ngx_otel_module module**
 
-see doc in https://nginx.org/en/docs/ngx_otel_module.html
+see doc in https://nginx.org/en/docs/quic.html and https://nginx.org/en/docs/ngx_otel_module.html
 
 ~~the http3 is test for latest nginx + brotli + ngx_http_geoip2_module + ngx_http_ipdb_module + http/3,http/3 support provided from the [cloudflare/quiche](https://github.com/cloudflare/quiche) projectthe, availability of the mirror is not guaranteed (Discontinued)~~
 

@@ -2,13 +2,14 @@ FROM alpine:3
 
 LABEL maintainer="nginx With HTTP3"
 
-ARG NGINX_VERSION=1.25.3
+ARG NGINX_VERSION=1.25.4
 
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 
 ARG MAXMIND_VERSION=1.7.1
 
-ARG LibreSSL_VERSION=3.7.3
+#use alpine package
+#ARG LibreSSL_VERSION=3.7.3
 
 RUN set -x \
   && sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_URL}/g" /etc/apk/repositories \

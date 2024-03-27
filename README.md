@@ -4,8 +4,6 @@
 
 [![Build ip2location Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ip2location-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ip2location-docker-image.yml)  [![Build ip2region Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ipregion-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-ipregion-docker-image.yml)
 
-[![Build quic Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-quic-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-quic-docker-image.yml) [![Build HTTP3 Docker Image CI](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-http3-docker-image.yml/badge.svg)](https://github.com/peytonyip/docker-nginx-brotli/actions/workflows/build-http3-docker-image.yml)
-
 ---
 # What is this?
 This project is based on Alpine Linux, the official nginx image and an nginx module that provides static and dynamic brotli compression. [Brotli](https://github.com/google/brotli) and the [nginx brotli module ](https://github.com/google/ngx_brotli) are built by Google.
@@ -14,9 +12,11 @@ This project is based on Alpine Linux, the official nginx image and an nginx mod
 
 since 1.19.8 is nginx  + brotli + [ngx_http_geoip2_module](https://github.com/leev/ngx_http_geoip2_module) + [ngx_http_ipdb_module](https://github.com/vislee/ngx_http_ipdb_module)
 
-the http3 is test for latest nginx + brotli + ngx_http_geoip2_module + ngx_http_ipdb_module + http/3,http/3 support provided from the [cloudflare/quiche](https://github.com/cloudflare/quiche) projectthe, availability of the mirror is not guaranteed (Discontinued)
+after 1.25.4,http3 enabled by default.
 
-the quic is test for latest [nginx-quic](https://hg.nginx.org/nginx-quic/) + brotli + ngx_http_geoip2_module +  ngx_http_ipdb_module,the availability of the mirror is not guaranteed
+~~the http3 is test for latest nginx + brotli + ngx_http_geoip2_module + ngx_http_ipdb_module + http/3,http/3 support provided from the [cloudflare/quiche](https://github.com/cloudflare/quiche) projectthe, availability of the mirror is not guaranteed (Discontinued)~~
+
+~~the quic is test for latest [nginx-quic](https://hg.nginx.org/nginx-quic/) + brotli + ngx_http_geoip2_module +  ngx_http_ipdb_module,the availability of the mirror is not guaranteed~~
 
 the ip2location is  latest nginx + brotli + [ip2location-nginx](https://github.com/ip2location/ip2location-nginx) + ngx_http_ipdb_module
 

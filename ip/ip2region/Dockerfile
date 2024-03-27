@@ -56,7 +56,8 @@ ARG NGINX_VERSION
 ARG NGX_BROTLI_COMMIT
 ARG CONFIG
 
-
+ENV OTEL_VERSION   0.1.0
+ENV PKG_RELEASE 1
 
 RUN \
 	apk add --no-cache --virtual .build-deps \
@@ -83,6 +84,25 @@ RUN \
 	git \
 	g++ \
 	cmake
+
+RUN set -x \
+    && apkArch="$(cat /etc/apk/arch)" \
+    && nginxPackages=" \
+        nginx-module-otel=${NGINX_VERSION}.${OTEL_VERSION}-r${PKG_RELEASE} \
+    " \
+# install prerequisites for public key and pkg-oss checks
+    && apk add --no-cache --virtual .checksum-deps \
+        openssl \
+	&& KEY_SHA512="e09fa32f0a0eab2b879ccbbc4d0e4fb9751486eedda75e35fac65802cc9faa266425edf83e261137a2f4d16281ce2c1a5f4502930fe75154723da014214f0655" \
+	&& wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub \
+	&& if echo "$KEY_SHA512 */tmp/nginx_signing.rsa.pub" | sha512sum -c -; then \
+		echo "key verification succeeded!"; \
+		mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/; \
+	else \
+		echo "key verification failed!"; \
+		exit 1; \
+	fi \
+	&& apk add -X "https://nginx.org/packages/mainline/alpine/v$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release)/main" --no-cache $nginxPackages
 
 COPY nginx.pub /tmp/nginx.pub
 
@@ -130,7 +150,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.18
+FROM alpine:3.19
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt

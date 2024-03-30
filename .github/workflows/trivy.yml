@@ -1,0 +1,39 @@
+name: trivy
+on:
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches: [ "main" ]
+  schedule:
+    - cron: '00 12 * * *'
+
+jobs:
+  trivy-scan:
+    name: Check
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate tarball from image
+        run: |
+          docker pull peytonyip/nginx-brotli:latest
+          docker save -o vuln-image.tar peytonyip/nginx-brotli:latest
+
+      - name: Run Trivy vulnerability scanner in tarball mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          input: /github/workspace/vuln-image.tar
+          severity: 'CRITICAL,HIGH'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'

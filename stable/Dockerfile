@@ -49,7 +49,7 @@ ARG CONFIG="\
 		--add-dynamic-module=/usr/src/ngx_http_ipdb_module \
 	"
 
-FROM alpine:latest
+FROM alpine:3.19.1
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION

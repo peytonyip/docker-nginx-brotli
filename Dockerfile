@@ -1,5 +1,5 @@
-ARG NGINX_VERSION=1.25.5
-ARG NGX_BROTLI_COMMIT=6e975bcb015f62e1f303054897783355e2a877dc
+ARG NGINX_VERSION=1.27.0
+ARG NGX_BROTLI_COMMIT=a71f9312c2deb28875acc7bacfdd5695a111aa53
 ARG CONFIG="\
 	--prefix=/etc/nginx \
 	--sbin-path=/usr/sbin/nginx \
@@ -50,7 +50,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ngx_http_ipdb_module \
 	"
 
-FROM alpine:3.20.0
+FROM alpine:3.19.1
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -59,7 +59,7 @@ ARG CONFIG
 
 
 ENV OTEL_VERSION   0.1.0
-ENV PKG_RELEASE 1
+ENV PKG_RELEASE 2
 
 
 RUN apk add --no-cache --virtual .build-deps \
@@ -143,7 +143,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.20.0
+FROM alpine:3.19.1
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt

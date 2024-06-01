@@ -1,14 +1,14 @@
-name: Build ip2region Docker Image CI
+name: Build Zstd Docker Image CI
 
 on:
   push:
     branches: [ main ]
     paths:
-    - 'ip/ip2region/Dockerfile'
+    - 'zstd/Dockerfile'
   pull_request:
     branches: [ main ]
     paths:
-    - 'ip/ip2region/Dockerfile'
+    - 'zstd/Dockerfile'
   workflow_dispatch:
 
 env:
@@ -50,8 +50,8 @@ jobs:
       - name: Set nginx version
         id: set-nginx-version
         run: |
-          echo "NGINX-VERSION=$(head -n 1 ./ip/ip2region/Dockerfile |awk -F '[=]'  '{print $2}')" >>  $GITHUB_OUTPUT
-          echo "Nginx=$(head -n 1 ./ip/ip2region/Dockerfile |awk -F '[=]'  '{print $2}')" 
+          echo "NGINX-VERSION=$(head -n 1 ./zstd/Dockerfile |awk -F '[=]'  '{print $2}')" >>  $GITHUB_OUTPUT
+          echo "Nginx=$(head -n 1 ./zstd/Dockerfile |awk -F '[=]'  '{print $2}')" 
           
       - name: Login to  ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
@@ -81,16 +81,16 @@ jobs:
         uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0
         with:
           context: .
-          file: ./ip/ip2region/Dockerfile
+          file: ./zstd/Dockerfile
           load: true
           tags: |
-            peytonyip/nginx-brotli:ip2region
-            quay.io/yevision/nginx-brotli:ip2region
-            ghcr.io/peytonyip/nginx-brotli:ip2region
+            peytonyip/nginx-brotli:zstd
+            quay.io/yevision/nginx-brotli:zstd
+            ghcr.io/peytonyip/nginx-brotli:zstd
 
       - name: Test before push
         run: |
-          docker run --rm peytonyip/nginx-brotli:ip2region nginx -V
+          docker run --rm peytonyip/nginx-brotli:zstd nginx -V
 
       - name: Build and push Docker image
         id: build-and-push
@@ -98,12 +98,12 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          file: ./ip/ip2region/Dockerfile
+          file: ./zstd/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            peytonyip/nginx-brotli:ip2region
-            quay.io/yevision/nginx-brotli:ip2region
-            ghcr.io/peytonyip/nginx-brotli:ip2region
+            peytonyip/nginx-brotli:zstd
+            quay.io/yevision/nginx-brotli:zstd
+            ghcr.io/peytonyip/nginx-brotli:zstd
           #labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

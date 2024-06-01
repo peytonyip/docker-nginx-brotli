@@ -81,6 +81,7 @@ jobs:
         uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0
         with:
           context: .
+          file: ./ip/ip2location/Dockerfile
           load: true
           tags: |
             peytonyip/nginx-brotli:ip2location

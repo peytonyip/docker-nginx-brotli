@@ -94,7 +94,7 @@ jobs:
       #     cache-to: type=gha,mode=max
 
       - name: Build and export to Docker
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           load: true
@@ -103,7 +103,7 @@ jobs:
         run: |
           docker run --rm  ghcr.io/peytonyip/nginx-brotli:test-action nginx -V        
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64

@@ -2,12 +2,12 @@ version: 2
 updates:
 
   - package-ecosystem: "docker"
-    # directory: "/"
-    directories: 
-      - "/"
-      - "/ip"
-      - "/quic"
-      - "/stable"
+    directory: "/"
+    # directories: 
+    #   - "/"
+    #   - "/ip"
+    #   - "/quic"
+    #   - "/stable"
     schedule:
       interval: "daily"
     commit-message:

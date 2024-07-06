@@ -51,7 +51,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ModSecurity-nginx \
 	"
 
-FROM alpine:3.19.1
+FROM alpine:3.20.1
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -157,7 +157,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.19.1
+FROM alpine:3.20.1
 ARG NGINX_VERSION
 
 

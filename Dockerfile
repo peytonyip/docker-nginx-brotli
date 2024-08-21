@@ -59,7 +59,7 @@ ARG CONFIG
 
 
 ENV OTEL_VERSION   0.1.0
-ENV PKG_RELEASE 2
+ENV PKG_RELEASE 1
 
 
 RUN apk add --no-cache --virtual .build-deps \

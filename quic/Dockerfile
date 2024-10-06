@@ -26,7 +26,7 @@ RUN set -x \
   && ls -la ../include \
   && apk del --no-network .build-deps
 
-FROM alpine:3.20.2
+FROM alpine:3.20.3
 
 LABEL maintainer="nginx With HTTP3"
 

@@ -49,7 +49,7 @@ ARG CONFIG="\
 	--add-module=/usr/src/ip2region/binding/nginx \
 	" 
 
-FROM alpine:3.20.2
+FROM alpine:3.20.3
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -149,7 +149,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.20.2
+FROM alpine:3.20.3
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt

@@ -26,7 +26,7 @@ jobs:
           docker save -o vuln-image.tar peytonyip/nginx-brotli:latest
 
       - name: Run Trivy vulnerability scanner in tarball mode
-        uses: aquasecurity/trivy-action@0.29.0
+        uses: aquasecurity/trivy-action@0.30.0
         with:
           input: /github/workspace/vuln-image.tar
           severity: 'CRITICAL,HIGH'

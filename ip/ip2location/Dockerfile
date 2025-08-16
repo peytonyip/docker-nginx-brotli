@@ -48,7 +48,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ip2location-nginx \
 	"
 
-FROM alpine:3.22.0
+FROM alpine:3.22.1
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -145,7 +145,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.22.0
+FROM alpine:3.22.1
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt

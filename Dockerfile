@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.29.1
+ARG NGINX_VERSION=1.29.2
 ARG NGX_BROTLI_COMMIT=a71f9312c2deb28875acc7bacfdd5695a111aa53
 ARG CONFIG="\
 	--prefix=/etc/nginx \
@@ -50,7 +50,7 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ngx_http_ipdb_module \
 	"
 
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
@@ -143,7 +143,7 @@ RUN \
 	| xargs -r apk info --installed \
 	| sort -u > /tmp/runDeps.txt
 
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 ARG NGINX_VERSION
 
 COPY --from=0 /tmp/runDeps.txt /tmp/runDeps.txt

@@ -11,7 +11,7 @@ on:
 jobs:
   trivy-scan:
     name: Check
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     # permissions:
     #   contents: read
     #   security-events: write
@@ -22,13 +22,15 @@ jobs:
 
       - name: Generate tarball from image
         run: |
+          set -euxo pipefail
           docker pull peytonyip/nginx-brotli:latest
           docker save -o vuln-image.tar peytonyip/nginx-brotli:latest
+          ls -lh "${{ github.workspace }}/vuln-image.tar
 
       - name: Run Trivy vulnerability scanner in tarball mode
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          input: /github/workspace/vuln-image.tar
+          input: ${{ github.workspace }}/vuln-image.tar
           severity: 'CRITICAL,HIGH'
           format: 'sarif'
           output: 'trivy-results.sarif'

@@ -20,11 +20,11 @@ jobs:
     strategy:
       matrix:
         image:
-          - ghcr.io/peytonyip/nginx-brotli:ip2location
-          - ghcr.io/peytonyip/nginx-brotli:zstd
-          - ghcr.io/peytonyip/nginx-brotli:ip2region
-          - ghcr.io/peytonyip/nginx-brotli:stable
-          - ghcr.io/peytonyip/nginx-brotli:latest
+          - peytonyip/nginx-brotli:ip2location
+          - peytonyip/nginx-brotli:zstd
+          - peytonyip/nginx-brotli:ip2region
+          - peytonyip/nginx-brotli:stable
+          - peytonyip/nginx-brotli:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6

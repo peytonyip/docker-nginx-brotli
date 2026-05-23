@@ -13,30 +13,61 @@ jobs:
   trivy-scan:
     name: Check
     runs-on: ubuntu-24.04
-    # permissions:
-    #   contents: read
-    #   security-events: write
-    #   actions: read
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    strategy:
+      matrix:
+        image:
+          - ghcr.io/peytonyip/nginx-brotli:ip2location
+          - ghcr.io/peytonyip/nginx-brotli:zstd
+          - ghcr.io/peytonyip/nginx-brotli:ip2region
+          - ghcr.io/peytonyip/nginx-brotli:stable
+          - ghcr.io/peytonyip/nginx-brotli:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Generate tarball from image
-        run: |
-          set -euxo pipefail
-          docker pull peytonyip/nginx-brotli:latest
-          docker save -o vuln-image.tar peytonyip/nginx-brotli:latest
-          ls -lh "${{ github.workspace }}"/vuln-image.tar
-
-      - name: Run Trivy vulnerability scanner in tarball mode
+      - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          input: ${{ github.workspace }}/vuln-image.tar
-          severity: 'CRITICAL,HIGH'
+          scan-type: 'fs'
+          ignore-unfixed: true
           format: 'sarif'
-          output: 'trivy-results.sarif'
+          output: 'trivy-fs.sarif'
+          severity: 'CRITICAL'
+
+      # - name: Generate tarball from image
+      #   run: |
+      #     set -euxo pipefail
+      #     docker pull peytonyip/nginx-brotli:latest
+      #     docker save -o vuln-image.tar peytonyip/nginx-brotli:latest
+      #     ls -lh "${{ github.workspace }}"/vuln-image.tar
+
+      # - name: Run Trivy vulnerability scanner in tarball mode
+      #   uses: aquasecurity/trivy-action@v0.36.0
+      #   with:
+      #     input: ${{ github.workspace }}/vuln-image.tar
+      #     severity: 'CRITICAL,HIGH'
+      #     format: 'sarif'
+      #     output: 'trivy-image.sarif'
+      - name: Run Trivy Image scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          # image-ref: peytonyip/nginx-brotli:latest
+          image-ref: ${{ matrix.image }}
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          format: sarif
+          output: trivy-image.sarif
+      
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: 'trivy-fs.sarif'
+      - name: Upload Image SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-image.sarif'

@@ -26,7 +26,7 @@ jobs:
           set -euxo pipefail
           docker pull peytonyip/nginx-brotli:latest
           docker save -o vuln-image.tar peytonyip/nginx-brotli:latest
-          ls -lh "${{ github.workspace }}/vuln-image.tar
+          ls -lh "${{ github.workspace }}"/vuln-image.tar
 
       - name: Run Trivy vulnerability scanner in tarball mode
         uses: aquasecurity/trivy-action@v0.36.0

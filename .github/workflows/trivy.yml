@@ -10,8 +10,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  trivy-scan:
-    name: Check
+  trivy-fs:
+    name: Trivy FS Scan
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-fs.sarif'
+          severity: 'CRITICAL'
+          
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-fs.sarif'
+
+  
+  trivy-image:
+    name: Trivy Image Scan
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -29,14 +55,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: 'fs'
-          ignore-unfixed: true
-          format: 'sarif'
-          output: 'trivy-fs.sarif'
-          severity: 'CRITICAL'
+
 
       # - name: Generate tarball from image
       #   run: |
@@ -57,6 +76,7 @@ jobs:
         run: |
           IMAGE_NAME=$(echo "${{ matrix.image }}" | sed 's#[/:]#-#g')
           echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
+
       - name: Run Trivy Image scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -65,15 +85,10 @@ jobs:
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           format: sarif
-          output: trivy-image.sarif
+          output: trivy-${{ steps.vars.outputs.image_name }}.sarif
       
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: 'trivy-fs.sarif'
       - name: Upload Image SARIF
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: 'trivy-image.sarif'
+          sarif_file: 'trivy-${{ steps.vars.outputs.image_name }}.sarif'
           category: trivy-image-${{ steps.vars.outputs.image_name }}

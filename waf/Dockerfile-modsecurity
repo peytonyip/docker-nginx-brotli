@@ -52,7 +52,7 @@ ARG CONFIG="\
 	"
 
 FROM alpine:3.22.2
-LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+#LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
 ARG NGX_BROTLI_COMMIT

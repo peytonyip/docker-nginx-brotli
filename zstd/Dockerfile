@@ -51,8 +51,8 @@ ARG CONFIG="\
 	--add-dynamic-module=/usr/src/ngx_http_ipdb_module \
 	"
 
-FROM alpine:3.22.2
-LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
+FROM alpine:3.24.2
+#LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
 ARG NGINX_VERSION
 ARG NGX_BROTLI_COMMIT

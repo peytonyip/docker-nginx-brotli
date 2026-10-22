@@ -30,7 +30,7 @@ FROM alpine:3.24.2
 
 LABEL maintainer="nginx With HTTP3"
 
-ARG NGINX_VERSION=1.31.7
+ARG NGINX_VERSION=1.31.8
 
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 
